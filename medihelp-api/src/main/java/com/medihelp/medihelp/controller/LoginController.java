@@ -4,6 +4,7 @@ import com.medihelp.medihelp.repository.UserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping("login")
     @ResponseBody
     public String loginGreeting(){
@@ -19,13 +24,15 @@ public class LoginController {
     }
     @PostMapping("/login")
     @ResponseBody
-    public String handleLogin(@RequestBody LoginRequest loginRequest) {
-        if (authenticate(loginRequest.getUsername(), loginRequest.getPassword())) {
+    public String login(@RequestBody LoginRequest loginRequest) {
+        User user = userRepository.findByUsername(loginRequest.getUsername());
+        if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return "Login successful.";
         } else {
             return "Login failed. Try again.";
         }
     }
+
 
     private boolean authenticate(String username, String password) {
         User user = userRepository.findByUsername(username);

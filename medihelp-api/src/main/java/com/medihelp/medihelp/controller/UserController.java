@@ -4,6 +4,7 @@ package com.medihelp.medihelp.controller;
 import com.medihelp.medihelp.model.User;
 import com.medihelp.medihelp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,17 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping("/register")
     User newUser(@RequestBody User newUser) {
         return userRepository.save(newUser);
     }
+//    User newUser(@RequestBody User newUser) {
+//        newUser.setPassword(PasswordEncoder.encode(newUser.getPassword()));
+//        return userRepository.save(newUser);
+//    }
 
     @GetMapping("/users")
     public Iterable<User> displayUsers() {

@@ -1,53 +1,50 @@
 package com.medihelp.medihelp.controller;
+
 import com.medihelp.medihelp.model.User;
 import com.medihelp.medihelp.repository.UserRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@Controller
+@RequestMapping("/login")
+@CrossOrigin(origins = "http://localhost:5173")
 public class LoginController {
+
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @GetMapping("login")
-    @ResponseBody
-    public String loginGreeting(){
-        return "Welcome back! Please enter your details.";
-    }
-    @PostMapping("/login")
-    @ResponseBody
-    public String login(@RequestBody LoginRequest loginRequest) {
+    @PostMapping
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         User user = userRepository.findByUsername(loginRequest.getUsername());
-        if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            return "Login successful.";
+
+        // Direct password comparison (not recommended for production)
+        if (user != null && loginRequest.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.ok("Login successful.");
         } else {
-            return "Login failed. Try again.";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Invalid username or password.");
         }
-    }
-
-
-    private boolean authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
-        return user != null && user.getPassword().equals(password);
     }
 
     public static class LoginRequest {
         private String username;
         private String password;
 
-        // Getters and setters
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
+        public String getUsername() {
+            return username;
+        }
 
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }

@@ -18,8 +18,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     User newUser(@RequestBody User newUser) {

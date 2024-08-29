@@ -11,6 +11,10 @@ import AdminPage from './pages/AdminPage';
 import UserView from './pages/UserView';
 import UserEdit from './pages/UserEdit';
 import AboutUsPage from './pages/AboutUsPage';
+import PlacesSearch from './components/PlacesSearch';
+// import HospitalSearch from '../components/HospitalSearch';
+// import HospitalSearch from './HospitalSearch';
+
 
 function App() {
 
@@ -23,6 +27,7 @@ function App() {
           <Route path="/login" element={<Login />}/>
           <Route path="/register" element={<Register />}/>
           <Route path="/MainPage" element={<MainPage />}/>
+          <Route path="/search" element={<PlacesSearch />}/>
           <Route path="/Admin" element={<AdminPage />}/>
           <Route path="/users/:id" element={<UserView/>}/>
           <Route path="/users/edit/:id" element={<UserEdit/>}/>

@@ -6,6 +6,7 @@ import psychiatric from "../images/psychiatric.png";
 import DoD from "../images/DoD.png";
 import veteransHospital from "../images/veteransHospital.png";
 import criticalHospital from "../images/criticalHospital.png";
+import { Link } from 'react-router-dom';
 
 import PopUp from "./PopUp";
 
@@ -135,6 +136,10 @@ export default function ClinicData() {
         >
           Next Page
         </button>
+        
+        
+        <Link to="/search">Search by zipcode</Link>
+
       </div>
       {data ? (
         <div>
@@ -190,4 +195,6 @@ export default function ClinicData() {
       )}
     </div>
   );
+
+  
 }
